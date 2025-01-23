@@ -1,0 +1,32 @@
+Package: hydroGraphR
+Title: Package for downloading, summarizing and visualizing hydrometric data downloaded from the Water Survey of Canada. 
+Version: 1.0.0
+Authors@R: 
+    person("Paula", "Soto", , "Paula.Soto@dfo-mpo.gc.ca", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: What the package does (one paragraph).
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    dplyr,
+    ggplot2,
+    ggpubr,
+    grid,
+    lubridate,
+    purrr,
+    stats,
+    stringr,
+    tibble,
+    tidyhydat,
+    tidyr
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)
+LazyData: true
