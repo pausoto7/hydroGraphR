@@ -2,9 +2,10 @@
 title: "Introduction to hydroGraphR"
 author: "Paula Soto"
 date:  "`r Sys.Date()`"
-output: 
-  html_document:
-    keep_md: yes
+output:
+  github_document:
+    html_preview: true
+always_allow_html: true
 ---
 
 ```{r, include = FALSE}
