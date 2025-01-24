@@ -16,10 +16,10 @@ To install the development version of `hydroGraphR` from GitHub:
 ``` r
 
 # Install devtools if not already installed
-#install.packages("devtools")
+install.packages("devtools")
 
 # Install hydroGraphR
-#devtools::install_github("your-username/hydroGraphR")
+install_github("pausoto7/hydroGraphR")
 
 library(hydroGraphR)
 ```

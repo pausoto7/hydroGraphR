@@ -265,7 +265,7 @@ create_hydrograph_separate <- function(all_hydro_sites_historical, all_hydro_sit
       }
       
     } else {
-      warning("No valid data available to plot.")
+      #warning("No valid data available to plot.")
     }
     
     
@@ -343,15 +343,13 @@ create_hydrograph_faceted <- function(all_hydro_sites_historical, all_hydro_site
           ))
         }
         
-        year_label <- max(unique(all_hydro_sites_1yr$WY_col))
-        
+
       }else{
         
         all_hydro_sites_historical_filtered <- all_hydro_sites_historical 
         
         all_hydro_sites_1yr_filtered <- all_hydro_sites_1yr 
         
-        year_label <- max(unique(all_hydro_sites_1yr$year_col))
         
       }
       
@@ -360,8 +358,11 @@ create_hydrograph_faceted <- function(all_hydro_sites_historical, all_hydro_site
     }
     
 
-    
-    
+    if (nrow(all_hydro_sites_1yr) > 0 && !all(is.na(all_hydro_sites_1yr$year_col))) {
+      year_label <- max(unique(all_hydro_sites_1yr$year_col), na.rm = TRUE)
+    } else {
+      year_label <- NA
+    }
 
     
 
