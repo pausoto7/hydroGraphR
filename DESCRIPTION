@@ -1,5 +1,5 @@
 Package: hydroGraphR
-Title: Package for downloading, summarizing and visualizing hydrometric data downloaded from the Water Survey of Canada. 
+Title: Package for downloading, summarizing and visualizing hydrometric data downloaded from the Water Survey of Canada
 Version: 1.0.0
 Authors@R: 
     person("Paula", "Soto", , "Paula.Soto@dfo-mpo.gc.ca", role = c("aut", "cre"),
@@ -12,8 +12,6 @@ RoxygenNote: 7.3.2
 Imports: 
     dplyr,
     ggplot2,
-    ggpubr,
-    grid,
     lubridate,
     purrr,
     stats,
