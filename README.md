@@ -1,7 +1,7 @@
 Introduction to hydroGraphR
 ================
 Paula Soto
-2025-01-23
+2025-01-27
 
 `hydroGraphR` is an R package designed to simplify the process of
 creating hydrographs that compare historical hydrometric data with a
@@ -14,19 +14,19 @@ workflow.
 To install the development version of `hydroGraphR` from GitHub:
 
 ``` r
-
 # Install devtools if not already installed
 install.packages("devtools")
 
 # Install hydroGraphR
 install_github("pausoto7/hydroGraphR")
 
+# Download library
 library(hydroGraphR)
 ```
 
 ## Workflow Overview
 
-The typical workflow for hydroGraphR involves the following steps:
+A typical workflow for hydroGraphR involves the following steps:
 
 1.  Download hydrometric data for specific WSC stations.
 2.  Generate single-year and historical statistics.
@@ -35,12 +35,12 @@ The typical workflow for hydroGraphR involves the following steps:
 ### Step 1: Download Hydrometric Data
 
 Use the `dl_hydro()` function to download data for specific Water Survey
-of Canada (WSC) station numbers. You can find station numbers on the WSC
-[website](https://wateroffice.ec.gc.ca/search/real_time_e.html).
+of Canada (WSC) station numbers. You can find station numbers on the
+[WSC website](https://wateroffice.ec.gc.ca/search/real_time_e.html).
 
-You may also assign nicknames to stations for easier identification in
-subsequent analyses. Ensure that the number of nicknames matches the
-number of station numbers.
+You may also assign nick names to stations for easier identification in
+subsequent analyses. If you are going to use nick names ensure that the
+number of nicknames matches the number of station numbers.
 
 Examples:
 
@@ -68,17 +68,24 @@ Max/min dates can also be selected for historical dates if focus is on a
 specific period.
 
 *Important Note:Data from the past two years may be provisional, as such
-should be used with caution* <br><br><br>
+should be used with caution when presented in YOI* <br><br><br>
 
 ``` r
-all_hydro_sites_1yr <- create_hydro_stats_singleYr(hydro_data, YOI = 2021, WY = FALSE) # Calendar year
-all_hydro_sites_hist <- create_hydro_stats_historical(hydro_data)
+all_hydro_sites_1yr <- create_hydro_stats_singleYr(hydro_data, 
+                                                   YOI = 2021, 
+                                                   WY = FALSE) # Calendar year
+
+all_hydro_sites_hist <- create_hydro_stats_historical(hydro_data) # Use all available hydrometric data
 ```
 
 ### Step 3: Create Hydrographs
 
 Visualize your data using one of two functions, depending on your
-preferred output style:
+preferred output style. Ensure that the water year (WY) choice matches
+the selection made in Step 2. For example, if “calendar year” was chosen
+for statistics in Step 2, it must also be selected for the hydrograph
+presentation. Selecting a different year type will result in missing
+data on the hydrograph and trigger a warning.
 
 **Option 1**: `create_hydrogreaph_separate()`
 
@@ -90,9 +97,9 @@ preferred output style:
 create_hydrograph_separate(
   all_hydro_sites_hist,
   all_hydro_sites_1yr,
-  parameter = "flow",
-  output_type = "Print",
-  WY = FALSE
+  parameter = "flow", # Discharge will be presented. Other option is "level" (water level). 
+  output_type = "print",
+  WY = FALSE # calendar year
 )
 ```
 
@@ -101,7 +108,7 @@ create_hydrograph_separate(
 
 **Option 2**: `create_hydrograph_faceted()`
 
-- This function creates a singel faceted hydrograph, making it easy to
+- This function creates a single faceted hydrograph, making it easy to
   compare multiple stations side by side.
 
 ``` r
@@ -110,7 +117,7 @@ create_hydrograph_faceted(
   all_hydro_sites_hist,
   all_hydro_sites_1yr,
   parameter = "flow",
-  WY = FALSE,
+  WY = FALSE, # calendar year
   output_type = "print"
 )
 ```

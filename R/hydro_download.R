@@ -31,6 +31,7 @@
 #' @export
 dl_hydro <- function(station_number, nick_name = NULL){
   
+
   # QC inputs
   if(is.null(nick_name)){
     #No nicknames will be added"

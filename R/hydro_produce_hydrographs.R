@@ -17,6 +17,7 @@
 #' @param custom_ymin_input A numeric value for a custom minimum y-axis value.
 #' @param jpeg_width A numeric value specifying the width of the figure (in pixels) for JPEG output.
 #' @param jpeg_height A numeric value specifying the height of the figure (in pixels) for JPEG output.
+#' @importFrom stats setNames
 #'
 #' @return Hydrograph plots saved to the `"figures/"` folder.
 #'
@@ -150,7 +151,7 @@ create_hydrograph_separate <- function(all_hydro_sites_historical, all_hydro_sit
         geom_line(all_hydro_sites_historical_filtered, 
                   mapping = aes(x = arbitrary_date, y = mean, color = "Mean"), linewidth = 0.6)
     } else {
-      warning("All historical data columns are NA, skipping historical data plotting.")
+      warning(sprintf("All historical data columns are NA for station %s, skipping historical data plotting.", locations[location_num]))
     }
     
     # Add 1-year line if there is data
@@ -160,7 +161,7 @@ create_hydrograph_separate <- function(all_hydro_sites_historical, all_hydro_sit
                   mapping = aes(x = arbitrary_date, y = Value, color = as.character(year_label)),
                   linewidth = 0.7)
     } else {
-      warning("All 1-year data values are NA, skipping 1-year data plotting.")
+      warning(sprintf("All 1-year data values are NA for station %s, skipping 1-year data plotting.", locations[location_num]))
     }
     
     
@@ -213,52 +214,7 @@ create_hydrograph_separate <- function(all_hydro_sites_historical, all_hydro_sit
       }else if(tolower(output_type) == "print"){
         
         print(hydrograph)
-        
-      # }else if(tolower(output_type) == "plotly"){
-      #   
-      #   hydrograph <- plotly::ggplotly(hydrograph)
-      #   
-      #   print(hydrograph)
-      #   
-      # }else if(tolower(output_type) == "dygraph"){
-      #   
-      #   # Prepare the data for dygraphs
-      #   if (historical_has_data || year_has_data) {
-      #     
-      #     # Combine the data into a single data frame
-      #     combined_data <- data.frame(
-      #       Date = all_hydro_sites_historical_filtered$arbitrary_date,
-      #       Q5 = all_hydro_sites_historical_filtered$q5,
-      #       Q95 = all_hydro_sites_historical_filtered$q95,
-      #       Q25 = all_hydro_sites_historical_filtered$q25,
-      #       Q75 = all_hydro_sites_historical_filtered$q75,
-      #       Median = all_hydro_sites_historical_filtered$median,
-      #       Mean = all_hydro_sites_historical_filtered$mean,
-      #       CurrentYear = if (year_has_data) all_hydro_sites_1yr_filtered$Value else NA
-      #     )
-      #     
-      #     # Convert to xts object for dygraphs
-      #     combined_xts <- xts::xts(combined_data[, -1], order.by = combined_data$Date)
-      #     
-      #     # Create dygraph
-      #     interactive_hydrograph <- dygraphs::dygraph(combined_xts, main = "Interactive Hydrograph") %>%
-      #       dygraphs::dySeries(c("Q5", "Q95"), label = "q5-q95 Range", fillGraph = TRUE, color = "lightblue3") %>%
-      #       dygraphs::dySeries(c("Q25", "Q75"), label = "q25-q75 Range", fillGraph = TRUE, color = "lightblue4") %>%
-      #       dygraphs::dySeries("Median", label = "Median", color = "black") %>%
-      #       dygraphs::dySeries("Mean", label = "Mean", color = "beige") %>%
-      #       dygraphs::dySeries("CurrentYear", label = as.character(year_label), color = "deeppink4") %>%
-      #       dygraphs::dyAxis("x", label = "Date") %>%
-      #       dygraphs::dyAxis("y", label = y_lab) %>%
-      #       dygraphs::dyLegend(show = "always") %>%
-      #       dygraphs::dyRangeSelector() # Adds range selector for zooming
-        # } else {
-        #   base::warning("No valid data available for plotting.")
-        #   interactive_hydrograph <- NULL
-        # }
-        # 
-        # # Print the interactive graph
-        # print(interactive_hydrographload)
-        
+ 
       }else{
         stop("Incorrect input to output_type. Please enter either print or jpeg and try again")
         
@@ -289,6 +245,10 @@ create_hydrograph_faceted <- function(all_hydro_sites_historical, all_hydro_site
                                       custom_ymin_input = NA, 
                                       jpeg_width = 6, 
                                       jpeg_height = 8){
+  
+  # saving this for use in warning message near the bottom 
+  all_hydro_sites_historical_initial <- all_hydro_sites_historical
+  all_hydro_sites_1yr_initial <- all_hydro_sites_1yr
   
   # filter df's for parameter wanted
   param_info <- select_hydro_parameter(all_hydro_sites_historical, all_hydro_sites_1yr, parameter)
@@ -380,8 +340,9 @@ create_hydrograph_faceted <- function(all_hydro_sites_historical, all_hydro_site
       dplyr::group_by(STATION_NUMBER) %>%
       dplyr::summarise(location_mean = mean(mean))
     
-    
-    
+
+
+
     plot_colours <- setNames(c("deeppink4", "black", "beige" ), 
                         c(year_label, "Median", "Mean"))
     
@@ -415,6 +376,30 @@ create_hydrograph_faceted <- function(all_hydro_sites_historical, all_hydro_site
              fill = guide_legend(order =2))
   }
   
+  
+  # Get unique station numbers, ensuring no NA values
+  locations_hist <- na.omit(unique(all_hydro_sites_historical_filtered$STATION_NUMBER))
+  locations_1yr <- na.omit(unique(all_hydro_sites_1yr_filtered$STATION_NUMBER))
+  
+  # Give warning if there is historical data missing
+  missing_stations_historical <- unique(all_hydro_sites_historical_initial$STATION_NUMBER[
+    !all_hydro_sites_historical_initial$STATION_NUMBER %in% locations_hist
+  ])
+  
+  if (length(missing_stations_historical) > 0) {
+    warning("No historical data found for the following locations: ", paste(missing_stations_historical, collapse = ", "))
+  }
+  
+  # Give warning if there is YOI (Year of Interest) data missing
+  missing_stations_1yr <- unique(all_hydro_sites_1yr_initial$STATION_NUMBER[
+    !all_hydro_sites_1yr_initial$STATION_NUMBER %in% locations_1yr
+  ])
+  
+  if (length(missing_stations_1yr) > 0) {
+    warning("No YOI data found for the following locations: ", paste(missing_stations_1yr, collapse = ", "))
+  }
+  
+  
   # if outputting graph into a .jpeg, add a figure title to easily know which station the figure represents
   if (tolower(output_type) == "jpeg"){
 
@@ -434,6 +419,8 @@ create_hydrograph_faceted <- function(all_hydro_sites_historical, all_hydro_site
   }
   
   
+  
+
   
 }
 
