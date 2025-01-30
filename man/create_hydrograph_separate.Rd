@@ -40,16 +40,16 @@ or \code{"print"} for HTML/Markdown output.}
 
 \item{WY}{Logical value indicating whether to present hydrograph by water year (\code{TRUE}) or calendar year (\code{FALSE}).}
 
-\item{custom_ymax_input}{A numeric value for a custom maximum y-axis value.}
+\item{custom_ymax_input}{A numeric value for a custom maximum y-axis value. Leave as NA for automatic ymax.}
 
-\item{custom_ymin_input}{A numeric value for a custom minimum y-axis value.}
+\item{custom_ymin_input}{A numeric value for a custom minimum y-axis value. Leave as NA for automatic xmax.}
 
 \item{fixed_y_scales}{A character string specifying whether the y-axis scale is \code{"fixed"} or \code{"free"}
 across facets. Defaults to \code{"fixed"}.}
 
-\item{jpeg_width}{A numeric value specifying the width of the figure (in pixels) for JPEG output.}
+\item{jpeg_width}{A numeric value specifying the width of the figure (in inches) for JPEG output.}
 
-\item{jpeg_height}{A numeric value specifying the height of the figure (in pixels) for JPEG output.}
+\item{jpeg_height}{A numeric value specifying the height of the figure (in inches) for JPEG output.}
 }
 \value{
 Hydrograph plots saved to the \code{"figures/"} folder.

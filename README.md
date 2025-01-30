@@ -1,7 +1,7 @@
 Introduction to hydroGraphR
 ================
-Paula Soto
-2025-01-27
+Paula Soto<br>
+2025-01-30
 
 `hydroGraphR` is an R package designed to simplify the process of
 creating hydrographs that compare historical hydrometric data with a
@@ -40,7 +40,7 @@ of Canada (WSC) station numbers. You can find station numbers on the
 
 You may also assign nick names to stations for easier identification in
 subsequent analyses. If you are going to use nick names ensure that the
-number of nicknames matches the number of station numbers.
+number of nick names matches the number of station numbers.
 
 Examples:
 
@@ -48,7 +48,7 @@ Examples:
 #example of station(s) download without nicknames
 hydro_data <- dl_hydro(station_number = c("08LD001", "08LC002"))
 
-#example of station(s) download with nicknames. 
+#example of station(s) download with nick names. 
 hydro_data_nickname <- dl_hydro(station_number = "08LD001", nick_name = "Adams River")
 ```
 
@@ -61,14 +61,19 @@ for:
   `create_hydro_stats_singleYr()`.
 - Historical data using `create_hydro_stats_historical()`.
 
-Stats can either be calculated and displayed in calendar year (Jan-Dec)
-or water year (WY) (Nov-Oct) format.
+WY is a logical value indicating whether to present hydrograph by water
+year (Nov-Oct) (TRUE) or calendar year (Jan-Dec) (FALSE).
 
 Max/min dates can also be selected for historical dates if focus is on a
-specific period.
+specific period.For example, you could enter date_minimum =
+“2010-01-01”, date_maximum - “2019-12-31” and YOI = 2020 if you wanted
+to compare 2020 with the 2010’s.
 
-*Important Note:Data from the past two years may be provisional, as such
-should be used with caution when presented in YOI* <br><br><br>
+***Important Note: Data from the past two years may be provisional, as
+such should be used with caution when a recent YOI is selected. Status
+of data can be found on the WSC website.***
+
+<br>
 
 ``` r
 all_hydro_sites_1yr <- create_hydro_stats_singleYr(hydro_data, 
@@ -81,23 +86,53 @@ all_hydro_sites_hist <- create_hydro_stats_historical(hydro_data) # Use all avai
 ### Step 3: Create Hydrographs
 
 Visualize your data using one of two functions, depending on your
-preferred output style. Ensure that the water year (WY) choice matches
-the selection made in Step 2. For example, if “calendar year” was chosen
-for statistics in Step 2, it must also be selected for the hydrograph
-presentation. Selecting a different year type will result in missing
-data on the hydrograph and trigger a warning.
+preferred output style.
 
-**Option 1**: `create_hydrogreaph_separate()`
+- `create_hydrograph_separate()`- Generates individual hydrographs for
+  each station.
+
+- `create_hydrograph_faceted()` - Creates a single faceted plot
+  displaying multiple stations together.
+
+#### Variables
+
+- **Parameter**: Options are `"flow"` for a discharge hydrograph, and
+  `"level"` for a water level hydrograph.
+
+- **WY**: Logical value indicating whether to present hydrograph by
+  water year (Nov-Oct)(`TRUE`) or calendar year (Jan-Dec)(`FALSE`).
+
+  - No matter the output selection ensure that the water year (WY)
+    choice matches the selection made in Step 2. For example, if
+    “calendar year” was chosen for statistics in Step 2, it must also be
+    selected for the hydrograph presentation. Selecting a different year
+    type will result in missing data on the hydrograph and trigger a
+    warning.
+
+- **output_type**:
+
+  - `"print"` will print your image in R, useful for embedding in
+    rmarkdown or shiny type outputs.
+  - `"jpeg"` will produce a jpeg image and save it to the “figures/”
+    folder of this project.
+
+<br>
+
+#### **Option 1**: `create_hydrograph_separate()`
 
 - This function creates separate hydrographs as individual images which
-  are ideal for standalone use or printing.
+  are ideal for standalone use or printing. When the “jpeg” option is
+  selected in this option, an additional title will appear on the image
+  with the station name to avoid confusion of station ID if the file
+  name is not easily available (for example if the image is pasted into
+  a word document).
 
 ``` r
 
 create_hydrograph_separate(
   all_hydro_sites_hist,
   all_hydro_sites_1yr,
-  parameter = "flow", # Discharge will be presented. Other option is "level" (water level). 
+  parameter = "flow", # Discharge hydrograph
   output_type = "print",
   WY = FALSE # calendar year
 )
@@ -106,10 +141,22 @@ create_hydrograph_separate(
 ![](README_files/figure-gfm/hydrographsep-1.png)<!-- -->![](README_files/figure-gfm/hydrographsep-2.png)<!-- -->
 <br><br><br>
 
-**Option 2**: `create_hydrograph_faceted()`
+#### **Option 2**: `create_hydrograph_faceted()`
 
 - This function creates a single faceted hydrograph, making it easy to
-  compare multiple stations side by side.
+  compare multiple stations side by side. There are a few additional
+  variabels that can also be modified in this function:
+
+  - `fixed_y_scales` = A character string specifying whether the y-axis
+    scale is “fixed” or “free” across facets. Defaults to “fixed”.
+  - `custom_ymax_input` = A numeric value for a custom maximum y-axis
+    value. Leave as NA for automatic ymax.
+  - `custom_ymin_input` = A numeric value for a custom minimum y-axis
+    value. Leave as NA for automatic xmax.
+  - `jpeg_width` = A numeric value specifying the width of the figure
+    (in inches) for JPEG output. 6 inches is automatic output.  
+  - `jpeg_height` = A numeric value specifying the height of the figure
+    (in inches) for JPEG output. 8 inches is automatic output.
 
 ``` r
 
@@ -118,7 +165,10 @@ create_hydrograph_faceted(
   all_hydro_sites_1yr,
   parameter = "flow",
   WY = FALSE, # calendar year
-  output_type = "print"
+  output_type = "print", 
+  fixed_y_scales = "fixed",
+  custom_ymax_input = NA, 
+  custom_ymin_input = NA
 )
 ```
 

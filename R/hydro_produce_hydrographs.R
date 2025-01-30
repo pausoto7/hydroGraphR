@@ -13,11 +13,13 @@
 #' @param WY Logical value indicating whether to present hydrograph by water year (`TRUE`) or calendar year (`FALSE`).
 #' @param fixed_y_scales A character string specifying whether the y-axis scale is `"fixed"` or `"free"` 
 #'   across facets. Defaults to `"fixed"`.
-#' @param custom_ymax_input A numeric value for a custom maximum y-axis value.
-#' @param custom_ymin_input A numeric value for a custom minimum y-axis value.
-#' @param jpeg_width A numeric value specifying the width of the figure (in pixels) for JPEG output.
-#' @param jpeg_height A numeric value specifying the height of the figure (in pixels) for JPEG output.
+#' @param custom_ymax_input A numeric value for a custom maximum y-axis value. Leave as NA for automatic ymax. 
+#' @param custom_ymin_input A numeric value for a custom minimum y-axis value. Leave as NA for automatic xmax. 
+#' @param jpeg_width A numeric value specifying the width of the figure (in inches) for JPEG output.
+#' @param jpeg_height A numeric value specifying the height of the figure (in inches) for JPEG output.
 #' @importFrom stats setNames
+#' @importFrom stats na.omit
+
 #'
 #' @return Hydrograph plots saved to the `"figures/"` folder.
 #'
