@@ -90,7 +90,7 @@ Statistics calculated are listed in more detail in Step 3.
 
 WY is a logical value indicating whether to present hydrograph by water year (Nov-Oct) (TRUE) or calendar year (Jan-Dec) (FALSE).
 
-Max/min dates can also be selected for historical dates if focus is on a specific period.For example, you could enter date_minimum =  "2010-01-01",  date_maximum - "2019-12-31" and YOI = 2020 if you wanted to compare 2020 with the 2010's. 
+Max/min dates can also be selected for historical dates if focus is on a specific period. For example, you could enter date_minimum =  "2010-01-01",  date_maximum - "2019-12-31" and YOI = 2020 if you wanted to compare 2020 with the 2010's. 
 
 ***Important Note: Data from the past two years may be provisional, as such should be used with caution when a recent YOI is selected. Status of data can be found on the WSC website.***
 
