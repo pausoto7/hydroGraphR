@@ -13,7 +13,8 @@
 #'   Must match the length and order of `station_number`. Use `NA` if no nicknames are required.
 #' @param Q_csv_path A character string specifying the path to a CSV file containing daily 
 #'   hydrology data manually downloaded from the WSC website.
-#'
+#' @importFrom AquaCache hydat_check
+
 #' @return A dataframe containing hydrologic data for all specified stations in long format.
 #'
 #' @examples
@@ -31,6 +32,8 @@
 #' @export
 dl_hydro <- function(station_number, nick_name = NULL){
   
+  AquaCache::hydat_check()
+
 
   # QC inputs
   if(is.null(nick_name)){

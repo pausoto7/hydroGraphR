@@ -3,7 +3,7 @@
 #' @description 
 #' `clean_climate` This wrangles *daily* climate data acquired from the Canadian  
 #' climate extraction tool 
-#' (https://climate-change.canada.ca/climate-data/#/hourly-climate-data) and gets 
+#' (https://climate-change.canada.ca/climate-data/#/daily-climate-data) and gets 
 #' it ready for analysis. 
 #' 
 #' 
@@ -49,7 +49,7 @@ clean_climate <- function(climate_raw){
   
   #change the appropriate columns into numeric
   climate_clean <- climate_clean %>%
-    dplyr::mutate_at(dplyr::all_of(num_cols_exist), as.numeric)
+    dplyr::mutate(across(all_of(num_cols_exist), as.numeric))
   
   stn_name <- stringr::str_replace_all(unique(climate_clean$STATION_NAME), " ", "_")
 

@@ -1,13 +1,36 @@
 Introduction to hydroGraphR
 ================
 Paula Soto<br>
-2025-01-30
+2025-03-05
 
-`hydroGraphR` is an R package designed to simplify the process of
-creating hydrographs that compare historical hydrometric data with a
-specific year’s traces. This vignette provides an overview of the
-package’s functionality and demonstrates how to use it in a typical
-workflow.
+`hydroGraphR` is an R package designed to streamline the process of
+visualizing hydrometric data by generating hydrographs that compare
+historical water level or discharge statistics with a specific year’s
+observed data. The package is particularly useful for hydrologists,
+environmental scientists, and water resource managers who need to
+analyze trends, seasonal variations, and anomalies in hydrological data.
+
+This vignette provides an overview of the package’s key functionalities
+and demonstrates its application in a typical workflow. Users can
+leverage `hydroGraphR` to:
+
+- Load and preprocess hydrometric data: The package supports various
+  data formats and includes functions for cleaning, filtering, and
+  formatting time series data.
+- Compute historical statistics: It can calculate long-term percentiles,
+  mean values, and other statistical summaries to establish a historical
+  baseline for comparison.
+- Generate hydrographs: Users can create clear and customizable plots
+  that overlay the current year’s hydrometric data on historical trends,
+  making it easy to identify deviations or anomalies.
+- Customize visualization settings: The package allows for fine-tuned
+  control over axis scaling, line styles, colors, and annotations,
+  ensuring clarity and effectiveness in communication.
+
+By automating many of the repetitive tasks involved in hydrograph
+creation, hydroGraphR enhances efficiency and consistency in
+hydrological data analysis. The following sections will guide you
+through its core functionality with step-by-step examples.
 
 ## Installation
 
@@ -16,6 +39,8 @@ To install the development version of `hydroGraphR` from GitHub:
 ``` r
 # Install devtools if not already installed
 install.packages("devtools")
+
+library(devtools)
 
 # Install hydroGraphR
 install_github("pausoto7/hydroGraphR")
@@ -37,6 +62,10 @@ A typical workflow for hydroGraphR involves the following steps:
 Use the `dl_hydro()` function to download data for specific Water Survey
 of Canada (WSC) station numbers. You can find station numbers on the
 [WSC website](https://wateroffice.ec.gc.ca/search/real_time_e.html).
+Note that with this function historical and real time data will be
+downloaded. Typically, historical data has been QAQC’d and occurred
+longer than two years ago. Real time data is data collected within the
+last two years and **has not** been QAQC’d. 
 
 You may also assign nick names to stations for easier identification in
 subsequent analyses. If you are going to use nick names ensure that the
@@ -60,6 +89,8 @@ for:
 - A specific year of interest (YOI) using
   `create_hydro_stats_singleYr()`.
 - Historical data using `create_hydro_stats_historical()`.
+
+Statistics calculated are listed in more detail in Step 3.
 
 WY is a logical value indicating whether to present hydrograph by water
 year (Nov-Oct) (TRUE) or calendar year (Jan-Dec) (FALSE).
@@ -93,6 +124,84 @@ preferred output style.
 
 - `create_hydrograph_faceted()` - Creates a single faceted plot
   displaying multiple stations together.
+
+Variables shown on hydrograph legends are described here:
+
+<table class="table table-condensed" style>
+<thead>
+<tr>
+<th style="text-align:left;">
+Term
+</th>
+<th style="text-align:left;">
+Definition
+</th>
+</tr>
+</thead>
+<tbody>
+<tr grouplength="1">
+<td colspan="2" style="border-bottom: 1px solid;">
+<strong>YOI</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Mean
+</td>
+<td style="text-align:left;">
+The average value of the measurements over the YOI period.
+</td>
+</tr>
+<tr grouplength="3">
+<td colspan="2" style="border-bottom: 1px solid;">
+<strong>Historical</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Mean
+</td>
+<td style="text-align:left;">
+The average value of the measurements over the historical period.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Q25 (Today)
+</td>
+<td style="text-align:left;">
+The 25th percentile of today’s data distribution, indicating that 25% of
+the data points are below this value.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Q75 (Today)
+</td>
+<td style="text-align:left;">
+The 75th percentile of today’s data distribution, indicating that 75% of
+the data points are below this value.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MAD
+</td>
+<td style="text-align:left;">
+Mean Annual Discharge, a measure of the average amount of discharge
+through a river or stream over the course of a year.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Date Ranges
+</td>
+<td style="text-align:left;">
+The years during which the data was collected and included in analysis.
+</td>
+</tr>
+</tbody>
+</table>
 
 #### Variables
 
@@ -147,15 +256,15 @@ create_hydrograph_separate(
   compare multiple stations side by side. There are a few additional
   variabels that can also be modified in this function:
 
-  - `fixed_y_scales` = A character string specifying whether the y-axis
+  - `fixed_y_scales`: A character string specifying whether the y-axis
     scale is “fixed” or “free” across facets. Defaults to “fixed”.
-  - `custom_ymax_input` = A numeric value for a custom maximum y-axis
+  - `custom_ymax_input`: A numeric value for a custom maximum y-axis
     value. Leave as NA for automatic ymax.
-  - `custom_ymin_input` = A numeric value for a custom minimum y-axis
-    value. Leave as NA for automatic xmax.
-  - `jpeg_width` = A numeric value specifying the width of the figure
-    (in inches) for JPEG output. 6 inches is automatic output.  
-  - `jpeg_height` = A numeric value specifying the height of the figure
+  - `custom_ymin_input`:A numeric value for a custom minimum y-axis
+    value. Leave as NA for automatic ymin.
+  - `jpeg_width`: A numeric value specifying the width of the figure (in
+    inches) for JPEG output. 6 inches is automatic output.  
+  - `jpeg_height`: A numeric value specifying the height of the figure
     (in inches) for JPEG output. 8 inches is automatic output.
 
 ``` r

@@ -17,7 +17,7 @@ and \code{\link[=temp_plotting_historical]{temp_plotting_historical()}}
 \description{
 \code{clean_climate} This wrangles \emph{daily} climate data acquired from the Canadian
 climate extraction tool
-(https://climate-change.canada.ca/climate-data/#/hourly-climate-data) and gets
+(https://climate-change.canada.ca/climate-data/#/daily-climate-data) and gets
 it ready for analysis.
 }
 \examples{

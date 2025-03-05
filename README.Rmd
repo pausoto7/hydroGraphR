@@ -17,8 +17,16 @@ knitr::opts_chunk$set(
 )
 ```
 
+`hydroGraphR` is an R package designed to streamline the process of visualizing hydrometric data by generating hydrographs that compare historical water level or discharge statistics with a specific year's observed data. The package is particularly useful for hydrologists, environmental scientists, and water resource managers who need to analyze trends, seasonal variations, and anomalies in hydrological data.
 
-`hydroGraphR` is an R package designed to simplify the process of creating hydrographs that compare historical hydrometric data with a specific year's traces. This vignette provides an overview of the package's functionality and demonstrates how to use it in a typical workflow.
+This vignette provides an overview of the package’s key functionalities and demonstrates its application in a typical workflow. Users can leverage `hydroGraphR` to:
+
+- Load and preprocess hydrometric data: The package supports various data formats and includes functions for cleaning, filtering, and formatting time series data.
+- Compute historical statistics: It can calculate long-term percentiles, mean values, and other statistical summaries to establish a historical baseline for comparison.
+- Generate hydrographs: Users can create clear and customizable plots that overlay the current year’s hydrometric data on historical trends, making it easy to identify deviations or anomalies.
+- Customize visualization settings: The package allows for fine-tuned control over axis scaling, line styles, colors, and annotations, ensuring clarity and effectiveness in communication.
+
+By automating many of the repetitive tasks involved in hydrograph creation, hydroGraphR enhances efficiency and consistency in hydrological data analysis. The following sections will guide you through its core functionality with step-by-step examples.
 
 ## Installation
 
@@ -28,6 +36,8 @@ To install the development version of `hydroGraphR` from GitHub:
 ```{r setup, eval = FALSE}
 # Install devtools if not already installed
 install.packages("devtools")
+
+library(devtools)
 
 # Install hydroGraphR
 install_github("pausoto7/hydroGraphR")
@@ -55,7 +65,7 @@ A typical workflow for hydroGraphR involves the following steps:
 
 ### Step 1: Download Hydrometric Data
 
-Use the `dl_hydro()` function to download data for specific Water Survey of Canada (WSC) station numbers. You can find station numbers on the  [WSC website](https://wateroffice.ec.gc.ca/search/real_time_e.html). 
+Use the `dl_hydro()` function to download data for specific Water Survey of Canada (WSC) station numbers. You can find station numbers on the  [WSC website](https://wateroffice.ec.gc.ca/search/real_time_e.html). Note that with this function historical and real time data will be downloaded. Typically, historical data has been QAQC'd and occurred longer than two years ago. Real time data is data collected within the last two years and **has not** been QAQC'd. 
 
 You may also assign nick names to stations for easier identification in subsequent analyses. If you are going to use nick names ensure that the number of nick names matches the number of station numbers. 
 
@@ -75,6 +85,8 @@ Once the hydrometric data is downloaded, you can calculate statistics for:
 
 - A specific year of interest (YOI) using `create_hydro_stats_singleYr()`.
 - Historical data using `create_hydro_stats_historical()`. 
+
+Statistics calculated are listed in more detail in Step 3. 
 
 WY is a logical value indicating whether to present hydrograph by water year (Nov-Oct) (TRUE) or calendar year (Jan-Dec) (FALSE).
 
@@ -102,6 +114,35 @@ Visualize your data using one of two functions, depending on your preferred outp
 - `create_hydrograph_separate()`- Generates individual hydrographs for each station. 
 
 - `create_hydrograph_faceted()` - Creates a single faceted plot displaying multiple stations together.
+
+Variables shown on hydrograph legends are described here: 
+
+```{r def table, echo=FALSE, results='asis'}
+
+definitions <- data.frame(
+  Term = c("Mean",  "Mean ", 
+            "Q25 (Today)", "Q75 (Today)", "MAD",
+           "Date Ranges"),
+  
+  Definition = c("The average value of the measurements over the YOI period.", 
+                 "The average value of the measurements over the historical period.",
+    "The 25th percentile of today's data distribution, indicating that 25% of the data points are below this value.",
+    "The 75th percentile of today's data distribution, indicating that 75% of the data points are below this value.",
+    "Mean Annual Discharge, a measure of the average amount of discharge through a river or stream over the course of a year.",
+    "The years during which the data was collected and included in analysis."
+  )
+)
+
+knitr::kable(definitions, "html", escape = FALSE, col.names = c("Term", "Definition")) %>%
+  kableExtra::kable_styling(full_width = TRUE, position = "left", bootstrap_options = "condensed") %>%
+  kableExtra::pack_rows(
+    index = c("YOI"  = 1, 
+              "Historical" = 3)
+  )
+  
+
+
+```
 
 #### Variables
 
