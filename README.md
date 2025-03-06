@@ -1,7 +1,7 @@
 Introduction to hydroGraphR
 ================
 Paula Soto<br>
-2025-03-05
+2025-03-06
 
 `hydroGraphR` is an R package designed to streamline the process of
 visualizing hydrometric data by generating hydrographs that compare
@@ -23,9 +23,9 @@ leverage `hydroGraphR` to:
 - Generate hydrographs: Users can create clear and customizable plots
   that overlay the current year’s hydrometric data on historical trends,
   making it easy to identify deviations or anomalies.
-- Customize visualization settings: The package allows for fine-tuned
-  control over axis scaling, line styles, colors, and annotations,
-  ensuring clarity and effectiveness in communication.
+- Customize scales: The package provides fine-tuned control over axis
+  scaling and time period selection, allowing users to adjust date
+  ranges and data visualization as needed.
 
 By automating many of the repetitive tasks involved in hydrograph
 creation, hydroGraphR enhances efficiency and consistency in
@@ -93,10 +93,12 @@ for:
 Statistics calculated are listed in more detail in Step 3.
 
 WY is a logical value indicating whether to present hydrograph by water
-year (Nov-Oct) (TRUE) or calendar year (Jan-Dec) (FALSE).
+year (Nov-Oct) (TRUE) or calendar year (Jan-Dec) (FALSE). For more
+information on water years, see
+[here](https://www.ausableriver.org/blog/what-water-year#:~:text=Hydrologists%20measure%20time%20differently%20than,known%20as%20a%20water%20year.).
 
 Max/min dates can also be selected for historical dates if focus is on a
-specific period.For example, you could enter date_minimum =
+specific period. For example, you could enter date_minimum =
 “2010-01-01”, date_maximum - “2019-12-31” and YOI = 2020 if you wanted
 to compare 2020 with the 2010’s.
 
@@ -149,7 +151,7 @@ Definition
 Mean
 </td>
 <td style="text-align:left;">
-The average value of the measurements over the YOI period.
+The recorded mean discharge or water level for each day.
 </td>
 </tr>
 <tr grouplength="3">
@@ -162,25 +164,28 @@ The average value of the measurements over the YOI period.
 Mean
 </td>
 <td style="text-align:left;">
-The average value of the measurements over the historical period.
+The long-term mean discharge or water level for each day, based on
+historical data.
 </td>
 </tr>
 <tr>
 <td style="text-align:left;padding-left: 2em;" indentlevel="1">
-Q25 (Today)
+q25-q75
 </td>
 <td style="text-align:left;">
-The 25th percentile of today’s data distribution, indicating that 25% of
-the data points are below this value.
+The interquartile range (q25–q75) of the data distribution, representing
+the middle 50% of values, where q25 is the 25th percentile and q75 is
+the 75th percentile.
 </td>
 </tr>
 <tr>
 <td style="text-align:left;padding-left: 2em;" indentlevel="1">
-Q75 (Today)
+q5-q95
 </td>
 <td style="text-align:left;">
-The 75th percentile of today’s data distribution, indicating that 75% of
-the data points are below this value.
+The 5th–95th percentile range (q5–q95) of the data distribution,
+capturing 90% of observed values, where q5 is the 5th percentile and q95
+is the 95th percentile.
 </td>
 </tr>
 <tr>
@@ -203,27 +208,31 @@ The years during which the data was collected and included in analysis.
 </tbody>
 </table>
 
-#### Variables
+#### Parameters
 
-- **Parameter**: Options are `"flow"` for a discharge hydrograph, and
+Below is a list of the input parameters for the functions, along with
+their expected values:
+
+- **parameter**: Options are `"flow"` for a discharge hydrograph, and
   `"level"` for a water level hydrograph.
 
 - **WY**: Logical value indicating whether to present hydrograph by
-  water year (Nov-Oct)(`TRUE`) or calendar year (Jan-Dec)(`FALSE`).
+  water year (Nov-Oct)(`TRUE`) or calendar year (Jan-Dec)(`FALSE`). For
+  more information on hydrologic water years see
+  [here](https://www.ausableriver.org/blog/what-water-year#:~:text=Hydrologists%20measure%20time%20differently%20than,known%20as%20a%20water%20year.).
 
-  - No matter the output selection ensure that the water year (WY)
-    choice matches the selection made in Step 2. For example, if
-    “calendar year” was chosen for statistics in Step 2, it must also be
-    selected for the hydrograph presentation. Selecting a different year
-    type will result in missing data on the hydrograph and trigger a
-    warning.
+  - Note:**Ensure that the water year (WY) choice matches the selection
+    made in Step 2.** For example, if “calendar year” was chosen for
+    statistics in Step 2, it must also be selected for the hydrograph
+    presentation. Selecting a different year type will result in missing
+    data on the hydrograph and trigger a warning.
 
 - **output_type**:
 
   - `"print"` will print your image in R, useful for embedding in
     rmarkdown or shiny type outputs.
   - `"jpeg"` will produce a jpeg image and save it to the “figures/”
-    folder of this project.
+    folder of your project.
 
 <br>
 
@@ -298,4 +307,4 @@ hydrographs. Whether working with individual rivers or a larger dataset,
 the package offers flexibility for both exploratory and
 presentation-ready outputs.
 
-For further details, consult the package documentation
+For more information, please email <Paula.Soto@dfo-mpo.gc.ca>
