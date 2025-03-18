@@ -53,7 +53,7 @@ a subset (1/4) of years including February 29 in the dataset.
 }
 \examples{
 # Example 1: Historical statistics
-hydro_data <- dl_hydro(station_number = "08LD001", nick_name = "Adams River")
+hydro_data <- dl_hydro(station_number = "08LD001", nickname = "Adams River")
 
 # Generate historical statistics
 create_hydro_stats_historical(hydro_data)

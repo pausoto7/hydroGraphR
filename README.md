@@ -67,9 +67,9 @@ downloaded. Typically, historical data has been QAQC’d and occurred
 longer than two years ago. Real time data is data collected within the
 last two years and **has not** been QAQC’d. 
 
-You may also assign nick names to stations for easier identification in
-subsequent analyses. If you are going to use nick names ensure that the
-number of nick names matches the number of station numbers.
+You may also assign nicknames to stations for easier identification in
+subsequent analyses. If you are going to use nicknames ensure that the
+number of nicknames matches the number of station numbers.
 
 Examples:
 
@@ -77,8 +77,8 @@ Examples:
 #example of station(s) download without nicknames
 hydro_data <- dl_hydro(station_number = c("08LD001", "08LC002"))
 
-#example of station(s) download with nick names. 
-hydro_data_nickname <- dl_hydro(station_number = "08LD001", nick_name = "Adams River")
+#example of station(s) download with nicknames. 
+hydro_data_nickname <- dl_hydro(station_number = "08LD001", nickname = "Adams River")
 ```
 
 ### Step 2: Create Statistics for Single Year and Historical Data

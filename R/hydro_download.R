@@ -9,7 +9,7 @@
 #'   ensuring consistency for analysis.
 #'
 #' @param station_number A single station number or a list of station numbers to download data for.
-#' @param nick_name A single nickname or a list of nicknames corresponding to `station_number`. 
+#' @param nickname A single nickname or a list of nicknames corresponding to `station_number`. 
 #'   Must match the length and order of `station_number`. Use `NA` if no nicknames are required.
 #' @param Q_csv_path A character string specifying the path to a CSV file containing daily 
 #'   hydrology data manually downloaded from the WSC website.
@@ -19,37 +19,37 @@
 #'
 #' @examples
 #' # Example 1: Download data for a single station
-#' dl_hydro(station_number = "08LD001", nick_name = "Adams River")
+#' dl_hydro(station_number = "08LD001", nickname = "Adams River")
 #'
 #' # Example 2: Download data for multiple stations
 #' dl_hydro(station_number = c("08LD001", "08LC002"), 
-#'          nick_name = c("Adams River", "Shuswap River"))
+#'          nickname = c("Adams River", "Shuswap River"))
 #'
 #' # Example 3: Reformat manually downloaded data
 #' file_path <- get_example_file("Nanaimo_08HB034_QR_20240104T2154.csv")
 #' reformat_Q_dl_daily(file_path)
 
 #' @export
-dl_hydro <- function(station_number, nick_name = NULL){
+dl_hydro <- function(station_number, nickname = NULL){
   
   AquaCache::hydat_check()
 
 
   # QC inputs
-  if(is.null(nick_name)){
+  if(is.null(nickname)){
     #No nicknames will be added"
     
-  }else if (!is.null(nick_name) & length(station_number) != length(nick_name)){st
+  }else if (!is.null(nickname) & length(station_number) != length(nickname)){st
     stop(simpleError("station number and location name are of different lengths. 
                      Please enter matching station numbers and names into input"))
     
   }else if(length(station_number) == 0){
     stop(simpleError("station_number was left blank. Please fill in properly and try again."))
     
-  }else{#station_number and nick_name number match"
+  }else{#station_number and nickname number match"
     
     # check that none of the items are NA or empty
-    if (!all(sapply(nick_name, function(x) is.character(x) && !is.na(x) && x != ""))) {
+    if (!all(sapply(nickname, function(x) is.character(x) && !is.na(x) && x != ""))) {
       stop("Some variables are not valid. Check for non-character, NA, or empty strings.")      
     }
     
@@ -279,8 +279,8 @@ dl_hydro <- function(station_number, nick_name = NULL){
     
     
     # If location is not NA then add nickname column
-    if (!is.null(nick_name)){
-      all_hydro_data <- dplyr::mutate(all_hydro_data, NickName = nick_name[hydro_locations])
+    if (!is.null(nickname)){
+      all_hydro_data <- dplyr::mutate(all_hydro_data, NickName = nickname[hydro_locations])
     }
     
     hydro_site_list[[hydro_locations]] <- all_hydro_data
@@ -290,9 +290,9 @@ dl_hydro <- function(station_number, nick_name = NULL){
   #bind all list elements
   all_hydro_sites <- do.call(rbind, hydro_site_list)
   
-  if ("nick_name" %in% names(all_hydro_sites)) {
+  if ("nickname" %in% names(all_hydro_sites)) {
     all_hydro_sites <- all_hydro_sites %>%
-      dplyr::select(STATION_NUMBER, nick_name, Date, Value, Parameter, unique_yrs)
+      dplyr::select(STATION_NUMBER, nickname, Date, Value, Parameter, unique_yrs)
     
   } else {
     all_hydro_sites <- all_hydro_sites %>%
@@ -317,7 +317,7 @@ dl_hydro <- function(station_number, nick_name = NULL){
 
 #' @export
 #' @rdname dl_hydro
-reformat_Q_dl_daily <- function(Q_csv_path, nick_name = NULL){
+reformat_Q_dl_daily <- function(Q_csv_path, nickname = NULL){
 
   # read 3rd line of csv which contains station number which is then pulled out
   csv_data_station_num_raw <- utils::read.csv(Q_csv_path, skip = 3, header = FALSE)
@@ -345,20 +345,20 @@ reformat_Q_dl_daily <- function(Q_csv_path, nick_name = NULL){
   
   
   # QC inputs
-  if(is.null(nick_name)){
+  if(is.null(nickname)){
     #No nicknames will be added"
     
-  }else if (!is.null(nick_name) & length(station_number) != length(nick_name)){
+  }else if (!is.null(nickname) & length(station_number) != length(nickname)){
     stop(simpleError("station number and location name are of different lengths. 
                      Please enter matching station numbers and names into input"))
     
   }else if(length(station_number) == 0){
     stop(simpleError("station_number was left blank. Please fill in properly and try again."))
     
-  }else{#station_number and nick_name number match"
+  }else{#station_number and nickname number match"
     
     # check that none of the items are NA or empty
-    if (!all(sapply(nick_name, function(x) is.character(x) && !is.na(x) && x != ""))) {
+    if (!all(sapply(nickname, function(x) is.character(x) && !is.na(x) && x != ""))) {
       stop("Some variables are not valid. Check for non-character, NA, or empty strings.")      
     }
     

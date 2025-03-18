@@ -38,7 +38,7 @@
 #'
 #' @examples
 #' # Example 1: Historical statistics
-#' hydro_data <- dl_hydro(station_number = "08LD001", nick_name = "Adams River")
+#' hydro_data <- dl_hydro(station_number = "08LD001", nickname = "Adams River")
 #' 
 #' # Generate historical statistics
 #' create_hydro_stats_historical(hydro_data)
@@ -67,7 +67,7 @@ create_hydro_stats_historical <- function(hydro_data, date_minimum = NA, date_ma
   }
   
   
-  if ("nick_name" %in% colnames(hydro_data)) {
+  if ("nickname" %in% colnames(hydro_data)) {
     start_end_dates <- hydro_data %>%
       dplyr::select(STATION_NUMBER, NickName, start_date, end_date) %>%
       dplyr::distinct()

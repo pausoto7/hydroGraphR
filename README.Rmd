@@ -48,6 +48,9 @@ library(hydroGraphR)
 
 ```
 
+Note: following the installation of library(hydroGraphR) you may get a message in the console letting you now that tidyhydat requires HYDAT and it may need to be downloaded (HYDAT is the official Canadian national database of hydrometric data). Follow the instruction and run download_hydat() if needed.Also note that every once in a while the newest version of the database may need to be downloaded. 
+
+
 ```{r dl package, echo=FALSE}
 
 #actually run library
@@ -67,7 +70,7 @@ A typical workflow for hydroGraphR involves the following steps:
 
 Use the `dl_hydro()` function to download data for specific Water Survey of Canada (WSC) station numbers. You can find station numbers on the  [WSC website](https://wateroffice.ec.gc.ca/search/real_time_e.html). Note that with this function historical and real time data will be downloaded. Typically, historical data has been QAQC'd and occurred longer than two years ago. Real time data is data collected within the last two years and **has not** been QAQC'd. 
 
-You may also assign nick names to stations for easier identification in subsequent analyses. If you are going to use nick names ensure that the number of nick names matches the number of station numbers. 
+You may also assign nicknames to stations for easier identification in subsequent analyses. If you are going to use nicknames ensure that the number of nicknames matches the number of station numbers. 
 
 Examples:
 
@@ -75,8 +78,8 @@ Examples:
 #example of station(s) download without nicknames
 hydro_data <- dl_hydro(station_number = c("08LD001", "08LC002"))
 
-#example of station(s) download with nick names. 
-hydro_data_nickname <- dl_hydro(station_number = "08LD001", nick_name = "Adams River")
+#example of station(s) download with nicksnames. 
+hydro_data_nickname <- dl_hydro(station_number = "08LD001", nickname = "Adams River")
 ```
 
 ### Step 2: Create Statistics for Single Year and Historical Data
@@ -158,7 +161,7 @@ Below is a list of the input parameters for the functions, along with their expe
 
 - **output_type**: 
     - `"print"` will print your image in R, useful for embedding in rmarkdown or shiny type outputs. 
-    - `"jpeg"` will produce a jpeg image and save it to the "figures/" folder of your project. 
+    - `"jpeg"` will produce a jpeg image and save it to the "figures/" folder of your working directory.  
 
 <br>
 

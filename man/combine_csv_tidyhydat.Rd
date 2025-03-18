@@ -34,7 +34,7 @@ accurate dataset.
 # Example 1: Download and combine data
 
 # Step 1: Retrieve data using tidyhydat
-tidy_data <- dl_hydro(station_number = "08HB034", nick_name = "Nanaimo River")
+tidy_data <- dl_hydro(station_number = "08HB034", nickname = "Nanaimo River")
 
 # Step 2: Prepare WSC data
 file_path <- get_example_file("Nanaimo_08HB034_QR_20240104T2154.csv")

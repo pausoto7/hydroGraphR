@@ -5,14 +5,14 @@
 \alias{reformat_Q_dl_daily}
 \title{Download and Reformat Hydrology Data}
 \usage{
-dl_hydro(station_number, nick_name = NULL)
+dl_hydro(station_number, nickname = NULL)
 
-reformat_Q_dl_daily(Q_csv_path, nick_name = NULL)
+reformat_Q_dl_daily(Q_csv_path, nickname = NULL)
 }
 \arguments{
 \item{station_number}{A single station number or a list of station numbers to download data for.}
 
-\item{nick_name}{A single nickname or a list of nicknames corresponding to \code{station_number}.
+\item{nickname}{A single nickname or a list of nicknames corresponding to \code{station_number}.
 Must match the length and order of \code{station_number}. Use \code{NA} if no nicknames are required.}
 
 \item{Q_csv_path}{A character string specifying the path to a CSV file containing daily
@@ -32,11 +32,11 @@ ensuring consistency for analysis.
 }
 \examples{
 # Example 1: Download data for a single station
-dl_hydro(station_number = "08LD001", nick_name = "Adams River")
+dl_hydro(station_number = "08LD001", nickname = "Adams River")
 
 # Example 2: Download data for multiple stations
 dl_hydro(station_number = c("08LD001", "08LC002"), 
-         nick_name = c("Adams River", "Shuswap River"))
+         nickname = c("Adams River", "Shuswap River"))
 
 # Example 3: Reformat manually downloaded data
 file_path <- get_example_file("Nanaimo_08HB034_QR_20240104T2154.csv")
