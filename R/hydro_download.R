@@ -34,6 +34,15 @@ dl_hydro <- function(station_number, nickname = NULL){
   
   #AquaCache::hydat_check()
 
+  hydat_check_msg <- tryCatch({
+    AquaCache::hydat_check()
+    "HYDAT status checked: local HYDAT database is available and was verified."
+  }, error = function(e) {
+    "HYDAT status could not be verified due to an error. Please check manually."
+  })
+  
+  # Optionally, store or display the message
+  message(hydat_check_msg)
 
   # QC inputs
   if(is.null(nickname)){
