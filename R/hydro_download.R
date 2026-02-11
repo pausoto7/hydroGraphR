@@ -32,7 +32,7 @@
 #' @export
 dl_hydro <- function(station_number, nickname = NULL){
   
-  AquaCache::hydat_check()
+  #AquaCache::hydat_check()
 
 
   # QC inputs
@@ -286,6 +286,7 @@ dl_hydro <- function(station_number, nickname = NULL){
     hydro_site_list[[hydro_locations]] <- all_hydro_data
     
   }
+  
   
   #bind all list elements
   all_hydro_sites <- do.call(rbind, hydro_site_list)
